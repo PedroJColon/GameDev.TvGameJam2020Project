@@ -25,11 +25,14 @@ void UOpenDoorV2::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Caculates the current roation postition of the door and then adds/subtracts depending on what happens.
+
 	InitialYaw = GetOwner()->GetActorRotation().Yaw;
 	CurrentYaw = InitialYaw;
 	OpenTargetYaw += CurrentYaw;
 	CloseTargetYaw -= CurrentYaw;
 
+	// Finds Trigger Volume inside of level
 	FindPressurePlate();
 
 	// ...
@@ -40,6 +43,8 @@ void UOpenDoorV2::BeginPlay()
 void UOpenDoorV2::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	// Determines what the door will do depending if the total of the mass is reached or not
 
 	if (TotalMassOfActors() > MassToOpenDoor)
 	{
@@ -59,6 +64,8 @@ void UOpenDoorV2::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 
 void UOpenDoorV2::FindPressurePlate()
 {
+	// Displays error message in case trigger volume is not there
+
 	if (!PressurePlate)
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s Component has the OpenDoor Component but no PressPlate set."), *GetOwner()->GetName());
